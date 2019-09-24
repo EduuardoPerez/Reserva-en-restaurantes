@@ -39,3 +39,41 @@ describe('Prueba de obtenerPuntuacion()', function(){
     expect(restaurant.obtenerPuntuacion()).to.equal(6.8);
   });
 })
+
+
+// Probar método calificar()
+describe('Prueba de calificar()', function(){
+
+  it('Verificar que NO se agregué la calificación si NO es un entero', function (){
+    
+    // Se deja sin calificaciones el atributo calificaciones
+    restaurant.calificaciones=[];
+
+    restaurant.calificar('valor');
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que NO se agregué la calificación si no se le pasa un parámetro', function (){
+    restaurant.calificar();
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que NO se agregué la calificación si el valor es menor que 0', function (){
+    restaurant.calificar(-1);
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que NO se agregué la calificación si el valor es igual que 0', function (){
+    restaurant.calificar(0);
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que NO se agregué la calificación si el valor es mayor que 10', function (){
+    restaurant.calificar(11);
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que NO se agregué la calificación si el valor es igual que 10', function (){
+    restaurant.calificar(10);
+    expect(restaurant.calificaciones.length).to.equal(0);
+  });
+  it('Verificar que se agregué la calificación si el valor es un entero entre 1 y 9 (incluidos)', function (){
+    restaurant.calificar(5);
+    expect(restaurant.calificaciones.length).to.equal(1);
+  });
+})
