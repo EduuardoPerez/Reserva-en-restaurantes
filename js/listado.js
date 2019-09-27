@@ -26,6 +26,13 @@ Listado.prototype.buscarRestaurante = function(id) {
 	return "No se ha encontrado ningún restaurant";
 }
 
+// Elimina los elementos repetidos de un arreglo
+const eliminarElementosRepetidos = arreglo => {
+	return arreglo.filter((elem, index, self) => {
+		return index === self.indexOf(elem);
+	});
+}
+
 //Obtiene todas las ciudades de los restaurantes sin repetidos
 Listado.prototype.obtenerCiudades = function() {
 	//Array donde se van a ir agregando las ciudades (van a estar repetidas)
@@ -35,10 +42,8 @@ Listado.prototype.obtenerCiudades = function() {
 		ciudades.push(this.restaurantes[i].ubicacion);
 	}
 	//Se crea un nuevo array donde se van a agregar las ciudades pero sin repetirse
-	var ciudadesSinRepetirse = ciudades.filter(function(ciudad, index, self) {
-		return index === self.indexOf(ciudad);
-	});
-
+	var ciudadesSinRepetirse = eliminarElementosRepetidos(ciudades);
+	
 	return ciudadesSinRepetirse.sort();
 }
 
@@ -48,10 +53,7 @@ Listado.prototype.obtenerRubros = function() {
 	for (var i = 0; i < this.restaurantes.length; i++) {
 		rubros.push(this.restaurantes[i].rubro);
 	}
-
-	var rubrosSinRepetirse = rubros.filter(function(rubro, index, self) {
-		return index === self.indexOf(rubro);
-	});
+	var rubrosSinRepetirse = eliminarElementosRepetidos(rubros);
 
 	return rubrosSinRepetirse.sort();
 }
@@ -76,9 +78,7 @@ Listado.prototype.obtenerHorarios = function() {
 	});
 
 	//En este arreglo vamos a poner todos los horarios pero sin repetidos
-	var horariosSinRepetirse = todosLosHorarios.filter(function(horario, index, self) {
-		return index === self.indexOf(horario);
-	});
+	var horariosSinRepetirse = eliminarElementosRepetidos(todosLosHorarios);
 
 	return horariosSinRepetirse.sort();
 }
