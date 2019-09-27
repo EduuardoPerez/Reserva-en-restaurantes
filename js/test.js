@@ -17,11 +17,11 @@ describe('Prueba del método reservarHorario(horario) de la clase Restaurant', f
   });
   it('El arreglo de horarios se mantiene igual cuando se reserva un horario que el restaurant no posee', function (){
     restaurant.reservarHorario('09:00')
-    expect(restaurant.horarios).to.deep.equal(['11:00', '14:30']);
+    expect(restaurant.horarios).eql(['11:00', '14:30']);
   });
   it('El arreglo de horarios se mantiene igual cuando no se le pasa ningún parámetro', function (){
     restaurant.reservarHorario();
-    expect(restaurant.horarios).to.deep.equal(['11:00', '14:30']);
+    expect(restaurant.horarios).eql(['11:00', '14:30']);
   });
 })
 
