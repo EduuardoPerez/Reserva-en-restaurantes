@@ -81,9 +81,9 @@ describe('Prueba del método calificar() de la clase Restaurant', function(){
 
 // Variable con restarantes para utilizarlo y hacer pruebas con la clase Listado
 var listadoDeRestaurantes = [
-	new Restaurant(1, "TAO Uptown", "Asiática", "Nueva York", ["13:00", "15:30", "18:00"], "../img/asiatica1.jpg", [6, 7, 9, 10, 5]),
-	new Restaurant(2, "Mandarín Kitchen", "Asiática", "Londres", ["15:00", "14:30", "12:30"], "../img/asiatica2.jpg", [7, 7, 3, 9, 7]),
-  new Restaurant(3, "Burgermeister", "Hamburguesa", "Berlín", ["11:30", "12:00", "22:30"], "../img/hamburguesa4.jpg", [5, 8, 4, 9, 9])
+	new Restaurant(0, '', '', '', [], '', []),
+	new Restaurant(1, '', '', '', [], '', []),
+	new Restaurant(2, '', '', '', [], '', [])
 ];
 
 // Listado para realizar pruebas sobre los metodos de esta clase
@@ -100,9 +100,47 @@ describe('Prueba del método buscarRestaurante(id) de la clase Listado', functio
     expect(listado.buscarRestaurante()).to.equal("No se ha encontrado ningún restaurant");
   });
   it(`Verificar que retorne "No se ha encontrado ningún restaurant" si no existe el id en el listado`, function(){
-    expect(listado.buscarRestaurante(0)).to.equal("No se ha encontrado ningún restaurant");
+    expect(listado.buscarRestaurante(3)).to.equal("No se ha encontrado ningún restaurant");
   });
   it('Verificar que retorne el restaurant correcto según el id que se le pase', function(){
-    expect(listado.buscarRestaurante(1)).to.equal(listado.restaurantes[0]);
+    expect(listado.buscarRestaurante(0)).to.equal(listado.restaurantes[0]);
+  });
+})
+
+
+// Probar método obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario) de la clase Listado
+describe('Prueba del método obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario) de la clase Listado', function(){
+  it('Verificar que NO retorne Restaurantes del listado si no se le pasan parámetros', function (){
+    listadoDeRestaurantes = [
+      new Restaurant(0, '', 'Italiano', 'Nueva York', ['13:00', '15:30', '18:00'], '', []),
+      new Restaurant(1, '', 'Venezolano', 'Mérida', ['15:00', '13:00', '14:30', '12:30'], '', []),
+      new Restaurant(2, '', 'Hamburguesa', 'Berlín', ['11:30', '12:00', '22:30'], '', [])
+    ];
+    listado.restaurantes = listadoDeRestaurantes;
+    expect(listado.obtenerRestaurantes().length).to.equal(0);
+  });
+  it('Verificar que retorne todos los Restaurantes del listado si tanto el rubro, la ciudad y el horario traen como valor null', function (){
+    expect(listado.obtenerRestaurantes(null, null, null)).eql(listadoDeRestaurantes);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por horario', function (){
+    expect(listado.obtenerRestaurantes(null, null, '13:00')).eql(listadoDeRestaurantes.slice(0,2));
+  });
+  it('Verificar que retorne los Restaurantes filtrando por ciudad', function (){
+    expect(listado.obtenerRestaurantes(null, 'Nueva York', null)).eql([listadoDeRestaurantes[0]]);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por ciudad y horario', function (){
+    expect(listado.obtenerRestaurantes(null, 'Berlín', '22:30')).eql([listadoDeRestaurantes[2]]);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por rubro', function (){
+    expect(listado.obtenerRestaurantes('Venezolano', null, null)).eql([listadoDeRestaurantes[1]]);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por rubro y horario', function (){
+    expect(listado.obtenerRestaurantes('Italiano', null, '15:30')).eql([listadoDeRestaurantes[0]]);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por rubro y ciudad', function (){
+    expect(listado.obtenerRestaurantes('Venezolano', 'Mérida', null)).eql([listadoDeRestaurantes[1]]);
+  });
+  it('Verificar que retorne los Restaurantes filtrando por rubro, ciudad y horario', function (){
+    expect(listado.obtenerRestaurantes('Italiano', 'Nueva York', '18:00')).eql([listadoDeRestaurantes[0]]);
   });
 })
