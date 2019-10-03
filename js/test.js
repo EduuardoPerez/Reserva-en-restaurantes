@@ -4,7 +4,6 @@ var expect = chai.expect;
 // Restaurant para realizar pruebas sobre los metodos de esta clase
 var restaurant = 	new Restaurant(0, '', '', '', [], '', []);
 
-
 // Probar método reservarHorario(horario) de la clase Restaurant
 describe('Prueba del método reservarHorario(horario) de la clase Restaurant', function(){
 
@@ -23,7 +22,7 @@ describe('Prueba del método reservarHorario(horario) de la clase Restaurant', f
     restaurant.reservarHorario();
     expect(restaurant.horarios).eql(['11:00', '14:30']);
   });
-})
+});
 
 
 // Probar método obtenerPuntuacion() de la clase Restaurant
@@ -38,7 +37,7 @@ describe('Prueba del método obtenerPuntuacion() de la clase Restaurant', functi
     
     expect(restaurant.obtenerPuntuacion()).to.equal(6.8);
   });
-})
+});
 
 
 // Probar método calificar() de la clase Restaurant
@@ -105,7 +104,7 @@ describe('Prueba del método buscarRestaurante(id) de la clase Listado', functio
   it('Verificar que retorne el restaurant correcto según el id que se le pase', function(){
     expect(listado.buscarRestaurante(0)).to.equal(listado.restaurantes[0]);
   });
-})
+});
 
 
 // Probar método obtenerRestaurantes(filtroRubro, filtroCiudad, filtroHorario) de la clase Listado
@@ -143,4 +142,59 @@ describe('Prueba del método obtenerRestaurantes(filtroRubro, filtroCiudad, filt
   it('Verificar que retorne los Restaurantes filtrando por rubro, ciudad y horario', function (){
     expect(listado.obtenerRestaurantes('Italiano', 'Nueva York', '18:00')).eql([listadoDeRestaurantes[0]]);
   });
-})
+});
+
+// Reservas para realizar pruebas sobre la clase Reserva
+var reserva1 = new Reserva (new Date(2018, 7, 24, 11, 00), 8, 350, "DES1");
+var reserva2 = new Reserva (new Date(2018, 7, 27, 14, 100), 2, 150, "DES200");
+var reserva3 = new Reserva (new Date(2018, 7, 27, 14, 100), 2, 150, "DES15");
+var reserva4 = new Reserva (new Date(2019, 9, 11, 13, 30), 2, 150, "DES200");
+var reserva5 = new Reserva (new Date(2019, 9, 7, 20, 45), 2, 150, "DES200");
+var reserva6 = new Reserva (new Date(2019, 9, 11, 17, 10), 2, 150, "DES1");
+var reserva7 = new Reserva (new Date(2019, 9, 7, 17, 10), 5, 10, "DES1");
+var reserva8 = new Reserva (new Date(2019, 9, 7, 17, 10), 7, 10, "DES1");
+var reserva9 = new Reserva (new Date(2019, 9, 7, 17, 10), 10, 10, "DES1");
+
+// Probar método precioBase() de la clase Reserva
+describe('Prueba del método precioBase() de la clase Reserva', function(){
+
+  it('Verificar que un calcule correctamente un precio base', function(){
+    expect(reserva1.precioBase()).to.equal(2800);
+  });
+});
+
+
+// Probar método precioTotal() de la clase Reserva
+describe('Prueba del método precioTotal() de la clase Reserva', function(){
+
+  it('Verificar que calcule correctamente el precio final', function(){
+    expect(reserva1.precioTotal()).to.equal(2450);
+  });
+  it('Verificar que aplique correctamente el descuento si son entre 4 y 6 personas', function(){
+    expect(reserva7.precioTotal()).to.equal(37.5);
+  });
+  it('Verificar que aplique correctamente el descuento si son entre 7 y 8 personas', function(){
+    expect(reserva8.precioTotal()).to.equal(53);
+  });
+  it('Verificar que aplique correctamente el descuento si son más de 8 personas', function(){
+    expect(reserva9.precioTotal()).to.equal(75);
+  });
+  it('Verificar que aplique correctamente el descuento del cupon DES15', function(){
+    expect(reserva3.precioTotal()).to.equal(255);
+  });
+  it('Verificar que aplique correctamente el descuento del cupon DES200', function(){
+    expect(reserva2.precioTotal()).to.equal(100);
+  });
+  it('Verificar que aplique correctamente el descuento del cupon DES1', function(){
+    expect(reserva1.precioTotal()).to.equal(2450);
+  });
+  it('Verificar que aplique correctamente el adicional de reservar 13-14', function(){
+    expect(reserva4.precioTotal()).to.equal(145);
+  });
+  it('Verificar que aplique correctamente el adicional de reservar 20-21', function(){
+    expect(reserva5.precioTotal()).to.equal(115);
+  });
+  it('Verificar que calcule correctamente el adicional de reservar un fin de semana', function(){
+    expect(reserva6.precioTotal()).to.equal(180);
+  });
+});
