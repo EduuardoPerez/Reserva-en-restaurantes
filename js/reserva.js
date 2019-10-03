@@ -12,12 +12,35 @@ class Reserva {
     return this.cantidadDePersonas * this.precioPorPersona;
   }
 
-  // Calcula el precio total de la reserva
-  // precio final = precio base + adicionales - descuentos
-  precioTotal () {
+  // Calcula los adicionales que serán cobrados
+  calcularAdicionales() {
 
-    const precioBase = this.precioBase();
+    let precioBase = this.precioBase();
     let adicionales = 0;
+
+    // Aplicar 5% adicional por reserva entre 13-14
+    if(this.horario.getHours()>=13 && this.horario.getMinutes()>=0){
+      if (this.horario.getHours()<=14 && this.horario.getMinutes()<=59) {
+        adicionales += precioBase*0.05;
+      }
+    }
+    // Aplicar 5% adicional por reserva entre 20-21
+    if(this.horario.getHours()>=20 && this.horario.getMinutes()>=0){
+      if (this.horario.getHours()<=21 && this.horario.getMinutes()<=59) {
+        adicionales += precioBase*0.05;
+      }
+    }
+    // Aplicar 10% adicional por reserva de fin de semana
+    if (this.horario.getDay()===0 || this.horario.getDay()===5 || this.horario.getDay()===6) {
+      adicionales += precioBase*0.1
+    }
+    return adicionales;
+  }
+
+  // Calcula los descuentos que serán realizados
+  calcularDescuentos() {
+    
+    let precioBase = this.precioBase();
     let descuentos = 0;
 
     // Si son entre 4 y 6 personas descontar 5%
@@ -40,23 +63,11 @@ class Reserva {
     if (this.codDescuento==='DES1') {
       descuentos += this.precioPorPersona;
     }
-    // Aplicar 5% adicional por reserva entre 13-14
-    if(this.horario.getHours()>=13 && this.horario.getMinutes()>=0){
-      if (this.horario.getHours()<=14 && this.horario.getMinutes()<=59) {
-        adicionales += precioBase*0.05;
-      }
-    }
-    // Aplicar 5% adicional por reserva entre 20-21
-    if(this.horario.getHours()>=20 && this.horario.getMinutes()>=0){
-      if (this.horario.getHours()<=21 && this.horario.getMinutes()<=59) {
-        adicionales += precioBase*0.05;
-      }
-    }
-    // Aplicar 10% adicional por reserva de fin de semana
-    if (this.horario.getDay()===0 || this.horario.getDay()===5 || this.horario.getDay()===6) {
-      adicionales += precioBase*0.1
-    }
+    return descuentos;
+  }
 
-    return precioBase + adicionales - descuentos;
+  // Calcula el precio total de la reserva
+  precioTotal () {
+    return this.precioBase() + this.calcularAdicionales() - this.calcularDescuentos();
   }
 }
